@@ -1,0 +1,16 @@
+title: Artist replace
+script_language_version: '1.1'
+script: |
+  $noop( Replacing separator )
+  $set(artist,$rreplace(%artist%, ?\(?:\,|x\) ?,; ))
+  $set(albumartist,$rreplace(%albumartist%, ?\, ?,; ))
+  $noop( Replacing Discogs number suffix )
+  $set(artist,$rreplace(%artist%,\\b \\\(\\d+\\\)\(?=\\b|\$|;\),))
+  $set(albumartist,$rreplace(%albumartist%,\\b \\\(\\d+\\\)\(?=\\b|;\),))
+  $noop( Remove unecessary spaces )
+  $set(artist,$rreplace(%artist%,\\b +\(?=;\),))
+  $set(albumartist,$rreplace(%albumartist%,\\b +\(?=;\),))
+  $noop( Multiple values fix )
+  $setmulti(artist,%artist%)
+  $setmulti(albumartist,%albumartist%)
+id: d6299b6c-f3ba-4f3e-99d9-ba353d519d3a
