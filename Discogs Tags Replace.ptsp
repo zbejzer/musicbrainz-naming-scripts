@@ -35,4 +35,4 @@ script: |
 
   $if($ne(%discogs_release_id%,),$delete(www))
   $delete(discogs_master_release_id)
-id: bcaa34c9-e755-401b-a539-6eb3707a127c
+id: e0bbe546-7744-418c-9bf1-76085e30a47d
