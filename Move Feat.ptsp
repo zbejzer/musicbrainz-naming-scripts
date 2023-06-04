@@ -1,0 +1,12 @@
+title: Move Feat
+script_language_version: '1.1'
+script: |
+  $set(_feat,$rsearch(%artist%,\\s+\\\(?\(f\(ea\)?t\\.[^\)]*\)))
+  $set(artist,$rreplace(%artist%,\\s+\\\(?\(f\(ea\)?t\\.[^\)]*\),))
+  $noop( Removing feat )
+  $set(_feat,$rreplace(%_feat%,\\s*?\(f\(ea\)?t\\.*\)\\s*,))
+  $noop( Replacing separator )
+  $set(_feat,$rreplace(%_feat%, ?\(?:\,|x|&\) ?,; ))
+
+  $if(%_feat%,$set(artist,%artist%; %_feat%))
+id: 90dea4e0-e840-41a1-8993-3ce05ebf766b
