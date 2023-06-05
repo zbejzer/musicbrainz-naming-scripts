@@ -2,8 +2,8 @@ title: Zbejzer Naming Script
 description: ""
 author: Zbejzer
 license: ''
-version: 2.3.0
-last_updated: 2023-06-04 21:45:58 UTC
+version: 2.1.0
+last_updated: 2023-06-04 15:16:05 UTC
 script_language_version: '1.1'
 script: |
   $noop( Calculating variables for later use )
@@ -20,13 +20,10 @@ script: |
   $if($rsearch(%_media%,\(?i:SACD\)),$set(_source,SACD))
   $if($and($eq(%_source%,),$ne(%_media%,Unknown Format)),$set(_source,%_media%))
 
-  $noop( Clearing unset or none as a catalog number )
-  $if($rsearch(%_catalognumber%,\(?i\)\\bnone\\b|\\bnot\\b),$set(_catalognumber,))
-
   $if2(%albumartist%,%artist%)/
   $if($rsearch(%album%,\(?i\)\\bnon\\b.\\balbum\\b),Non-Album Tracks,%album%)
   $if($year(%date%), \($year(%date%)\))
    [$if(%_source%,%_source% - )$upper(%_extension%)$if(%_bits_per_sample%, - %_bits_per_sample% bit)$if(%_sampleratecalc%, - %_sampleratecalc% kHz)$if(%_channels%, - %_channels%ch)]
-  $if(%_catalognumber%, {%_catalognumber%})/
+  $if($ne(%_catalognumber%,[none]), {%_catalognumber%})/
   $if($gt(%totaldiscs%,1),%discnumber%-)$if(%tracknumber%,$num(%tracknumber%,2) )$if(%_multiartist%,%artist% - )%title%
 id: 9daeb828-3f08-42e9-9180-f6ea3ef0557c

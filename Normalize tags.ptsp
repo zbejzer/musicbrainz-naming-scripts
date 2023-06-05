@@ -1,0 +1,35 @@
+title: Normalize tags
+script_language_version: '1.1'
+script: |
+  $noop( Date )
+  $if($and($not(%date%),%discogs_released%),$set(date,%discogs_released%))
+  $delete(discogs_released)
+
+  $noop( Label )
+  $if($and($not(%label%),%discogs_label%),$set(label,%discogs_label%))
+  $delete(discogs_label)
+  $if($and($not(%label%),%organization%),$set(label,%organization%))
+  $delete(organization)
+  $noop( Cleaning Discogs number suffix )
+  $set(label,$rreplace(%label%,\\b \\\(\\d+\\\)\(?=\\b|\$|;\),))
+  $if($rsearch(%label%,\(?i\)\\bnone\\b|\\bnot on label\\b|\\bno label\\b),$set(label,[no label]))
+  $noop( Multiple values fix )
+  $set(label,$rreplace(%label%, ?\, ?,; ))
+  $setmulti(label,%label%)
+
+  $noop( Country )
+  $if($and($not(%releasecountry%),%discogs_country%),$set(releasecountry,%discogs_country%))
+  $delete(discogs_country)
+  $if($and($not(%releasecountry%),%country%),$set(releasecountry,%country%))
+  $delete(country)
+
+  $noop( Catalog Number )
+  $if($and($not(%catalognumber%),%discogs_catalog%),$set(catalognumber,%discogs_catalog%))
+  $delete(discogs_catalog)
+  $if($and($not(%catalognumber%),%catalogid%),$set(catalognumber,%catalogid%))
+  $delete(catalogid)
+  $noop( Replacing unset or none as a catalog number )
+  $if($rsearch(%catalognumber%,\(?i\)\\bnone\\b|\\bnot\\b|\\bno\\b),$set(catalognumber,[none]))
+
+  $if(%discogs_release_id%,$delete(www))
+id: f05ddba8-4917-41cf-91cd-2faf070360c3

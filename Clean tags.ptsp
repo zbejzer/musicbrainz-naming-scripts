@@ -1,0 +1,16 @@
+title: Clean tags
+script_language_version: '1.1'
+script: |
+  $noop( Move year to original year tag )
+  $if($and($not(%originalyear%),%year%),$set(originalyear,%year%))
+  $delete(year)
+
+  $noop( Remove musicbrainz_* tags )
+  $foreach(musicbrainz_artistid; musicbrainz_recordingid; musicbrainz_albumartistid; musicbrainz_releasegroupid; musicbrainz_albumid; musicbrainz_trackid; acoustid_id,$delete(%_loop_value%))
+
+  $noop( Remove discogs_* tags )
+  $foreach(discogs_label_id; discogs_votes; discogs_release_month; discogs_rating; discogs_artist_id; discogs_master_release_id,$delete(%_loop_value%))
+
+  $noop( Remove other tags )
+  $foreach(script; explicit; albumartistsort; albumsort; artistsort; artists; titlesort,$delete(%_loop_value%))
+id: 35d1dce8-2ce5-4246-9ed1-156a976daf4b
